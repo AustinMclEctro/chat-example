@@ -1,21 +1,35 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body { font: 14px Helvetica, Arial; }
+body {
+    font: 14px Helvetica, Arial;
+    height: 100%;
+    min-height: 100%;
+}
 
 form { background: #000; padding: 0.5em; position: fixed; bottom: 0; width: 100%; }
 form input { border: 0; padding: 0.5em; width: 90%; margin-right: .5%; }
-form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 0.5em; }
+form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 0.5em; text-align: center; }
 
-#messages { list-style-type: none; }
-#messages li { padding: 0.5em 0.2em; }
-#messages li:nth-child(odd) { background: #eee; }
-#messages { margin-bottom: 40px; }
+#messages{ 
+    list-style-type: none;
+/*    line-height: 0.1em;*/
+}
+
+#messages #timestamp{
+/*    padding: 0.5em 0.2em;*/
+    margin-top: 1em;
+    opacity: 0.5;
+}
+/*#messages li:nth-child(odd) { background: #eee; }*/
+/*#messages { margin-bottom: 40px; }*/
 
 #usersList { list-style-type: none; }
 
 .WindowHolder {
     display: flex;
     flex-direction: row;
+    flex-basis: auto;
+    overflow: auto;
 }
 
 .Window#Chat{

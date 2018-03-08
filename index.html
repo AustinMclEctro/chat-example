@@ -48,8 +48,8 @@
         });
           
         socket.on("chat message", function(t, msg){
-            $("#"+t).css({ color: "blue"});
-            $("#messages").append($("<li>"+t+"<br>"+msg+"</li>"));
+//            $("#messages").append($("<li>"+t+"<br>"+msg+"</li>"));
+            $("#messages").append($("<li id='timestamp'>"+t+"<li>"+msg+"</li></li>"));
             window.scrollTo(0, document.body.scrollHeight);
         });
           
