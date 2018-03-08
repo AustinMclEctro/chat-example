@@ -3,6 +3,7 @@
   <head>
     <title>SENG 513 A3 Web Chat</title>
     <link rel="stylesheet" type="text/css" href="mainStyle.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
       
@@ -64,6 +65,12 @@
         socket.on("updateWelcome", function(name){
            $("#Welcome").text("Welcome "+name);
             return false;
+        });
+        
+        socket.on("updateMessages", function(messages){
+            for(var i in messages){
+               $("#messages").append($("<li id='timestamp'>"+messages[i]+"<li>"+i+"</li></li>"));
+           }
         });
           
       });

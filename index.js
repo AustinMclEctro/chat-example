@@ -5,7 +5,7 @@ var io = require("socket.io")(http);
 var port = process.env.PORT || 3000;
 var path = (require("path"));
 
-var messages = {};  // message: timestamp
+var messages = {};  // messagetext: timestamp (message includes username)
 var users = [];     // all users in the order they connected
 
 app.get("/", function(req, res){
@@ -17,7 +17,8 @@ app.get("/", function(req, res){
 io.on("connection", function(socket){
     console.log("\nUser "+socket.id+" connected");
     socket.nickname = undefined;
-    socket.emit("updateWelcome", "user "+socket.id);
+    socket.emit("updateWelcome", "user "+socket.id); 
+    socket.emit("updateMessages", messages);
     
     if(!users.includes(socket.id)){
         users.push(socket.id);
@@ -53,14 +54,19 @@ io.on("connection", function(socket){
     });
     
     socket.on("chat message", function(t, msg){
-        t = getTimeStamp();
-        messages[msg] = t;
-        var accessor = undefined;
+        // maintain 200 max messages
+        if(Object.keys(messages).length === 200){
+            delete messages[0];
+        }
+        
         if(socket.nickname === undefined){
             msg = "user "+socket.id+": "+msg;
         } else{
             msg = socket.nickname+": "+msg;
         } 
+        t = getTimeStamp();
+        messages[msg] = t;
+        
         io.emit("chat message", t, msg);
     });
     
