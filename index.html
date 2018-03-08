@@ -9,17 +9,13 @@
       <div class="WindowHolder">
           
           <div class="Window" id="Chat">
-              <div class="Title">
-                  <h2>Welcome [username here]</h2>
-              </div>
+              <h2 id="Welcome">Welcome</h2>
               <ul id="messages"></ul>
           </div>
     
           <div class="Window" id="Users">
-              <div class="Title">
-                  <h2>Users</h2>
-              </div>
-              <p>u</p>
+              <h2 id="Users">Users</h2>
+              <ul id="usersList"></ul>
           </div>
           
       </div>
@@ -33,15 +29,43 @@
     <script>
       $(function () {
         var socket = io();
-        $('form').submit(function(){
-          socket.emit('chat message', $('#m').val());
-          $('#m').val('');
-          return false;
+
+        $("form").submit(function(){
+            var m = $("#m").val();
+            
+            // Check for /nick command
+            if(m.slice(0, 5).includes("/nick")){
+                var nickname = m.slice(6);
+                socket.emit("sendNickname", nickname);
+            }
+            else{
+                var t = "";
+                socket.emit("chat message", t, m);
+            }
+            
+            $("#m").val("");
+            return false;
         });
-        socket.on('chat message', function(msg){
-          $('#messages').append($('<li>').text(msg));
-          window.scrollTo(0, document.body.scrollHeight);
+          
+        socket.on("chat message", function(t, msg){
+            $("#"+t).css({ color: "blue"});
+            $("#messages").append($("<li>"+t+"<br>"+msg+"</li>"));
+            window.scrollTo(0, document.body.scrollHeight);
         });
+          
+        socket.on("refreshUsersList", function(users){
+            $("#usersList").empty();
+            for(var i = 0; i < users.length; i++){
+                $("#usersList").append($("<li>").text(users[i]));
+            }
+            return false;
+        });
+          
+        socket.on("updateWelcome", function(name){
+           $("#Welcome").text("Welcome "+name);
+            return false;
+        });
+          
       });
     </script>
   </body>
