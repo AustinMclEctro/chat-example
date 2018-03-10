@@ -30,38 +30,66 @@ form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 
 
 #usersList { list-style-type: none; }
 
-.WindowHolder {
+.WindowHolder{
     display: flex;
     flex-direction: row;
     flex-basis: auto;
     flex-flow: wrap-reverse;
-    overflow: auto;
     height: 95%;
     min-height: 95%;
 }
 
-.Window#Chat{
+.Window {
     background-color: bisque;
-    padding-left: 1%; padding-top: 1%; padding-bottom: 1%;
-    margin-left: 1%; margin-top: 1%; margin-bottom: 1%;
+    padding: 0.5em;
+    margin: 0.5em;
     border: black 0.5em solid;
-    flex: 4;
-    flex-basis: auto;
-    display: flex;
-    flex-direction: column-reverse;
-    overflow-x: auto;
-    overflow-y: scroll;
-    min-height: 70%;
+    overflow-y: hidden;
+    position: relative;
 }
 
-.Window#Users{
+#Chat{
+    flex-grow: 4;
+    flex-shrink: 0;
+    flex-basis: auto;
+    flex-direction: column;
+    overflow-y: hidden;
+}
+
+#messagesDiv{
+    padding: 0.5em;
+    overflow-x: auto;
+    overflow-y: scroll;
+    max-height: 95%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+#Users{
+    flex-grow: 2;
+    flex-shrink: 0;
+    flex-basis: auto;
+    min-height: 10%;
+    overflow-y: hidden;
+}
+
+#usersDiv{
     background-color: bisque;
     padding: 1%;
     margin: 1%;
-    border: black 0.5em solid;
-    flex: 2;
-    flex-basis: auto;
     overflow-x: auto;
     overflow-y: scroll;
-    min-height: 10%;
+    max-height: 95%;
+}
+
+#WelcomeHeading{
+    color: blue;
+    padding: 0.5em;
+}
+
+#UsersHeading{
+    color: blue;
+    padding: 0.5em;
 }

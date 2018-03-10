@@ -10,15 +10,18 @@
       <div class="WindowHolder">
           
           <div class="Window" id="Chat">
-              <h2 id="Welcome">Welcome</h2>
-              <ul id="messages"></ul>
+            <h2 id="WelcomeHeading">Welcome</h2>
+              <div id="messagesDiv">
+                  <ul id="messages"></ul>
+              </div>
           </div>
     
           <div class="Window" id="Users">
-              <h2 id="Users">Users</h2>
-              <ul id="usersList"></ul>
+            <h2 id="UsersHeading">Users</h2>
+              <div id="usersDiv">
+                  <ul id="usersList"></ul>
+              </div>
           </div>
-          
       </div>
       
     <form action="">
@@ -30,7 +33,7 @@
     <script>
       $(function () {
         var socket = io();
-
+          
         $("form").submit(function(){
             var m = $("#m").val();
             
@@ -48,9 +51,12 @@
             return false;
         });
           
-        socket.on("chat message", function(t, msg){
-//            $("#messages").append($("<li>"+t+"<br>"+msg+"</li>"));
-            $("#messages").append($("<li id='timestamp'>"+t+"<li>"+msg+"</li></li>"));
+        socket.on("chat message", function(t, msg, id){
+            if(id === socket.id){
+                $("#messages").append($("<li id='timestamp'>"+t+"<li><b>"+msg+"</b></li></li>"));
+            } else{
+                $("#messages").append($("<li id='timestamp'>"+t+"<li>"+msg+"</li></li>"));
+            }
             window.scrollTo(0, document.body.scrollHeight);
         });
           

@@ -67,7 +67,7 @@ io.on("connection", function(socket){
         t = getTimeStamp();
         messages[msg] = t;
         
-        io.emit("chat message", t, msg);
+        io.emit("chat message", t, msg, socket.id);
     });
     
     socket.on("disconnect", function(){
