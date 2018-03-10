@@ -94,7 +94,6 @@
         });
         
         socket.on("updateMessages", function(messages){
-            
             messages.forEach(function(m){
                 $("#messages").append(m);
             });

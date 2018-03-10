@@ -83,6 +83,8 @@ io.on("connection", function(socket){
     });
     
     socket.on("addMessage", function(msg){
+        msg = msg.replace("<strong>","");
+        msg = msg.replace("</strong>","");
         messages.push(msg);
         console.log(messages);
     });
