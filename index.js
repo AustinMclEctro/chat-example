@@ -5,7 +5,8 @@ var io = require("socket.io")(http);
 var port = process.env.PORT || 3000;
 var path = (require("path"));
 
-var messages = {};  // messagetext: timestamp (message includes username)
+var mess = {};  // messagetext: timestamp (message includes username)
+var messages = [];
 var users = [];     // all users in the order they connected
 
 app.get("/", function(req, res){
@@ -24,7 +25,7 @@ io.on("connection", function(socket){
     color = "#"+color;
     socket.color = color;
     
-    socket.emit("connected", socket.id, color); 
+    socket.emit("updateProps", socket.id, color); 
     
     if(!users.includes(socket.id)){
         users.push(socket.id);
@@ -59,10 +60,15 @@ io.on("connection", function(socket){
         console.log(users);
     });
     
+    socket.on("changeColor", function(color){
+        socket.color = color;
+        socket.emit("updateProps", socket.id, color); 
+    });
+    
     socket.on("chat message", function(t, msg, id, color, nick){
         // maintain 200 max messages
-        if(Object.keys(messages).length === 200){
-            delete messages[0];
+        if(messages.length === 200){
+            messages.splice(0, 1);
         }
         var m = "";
         if(socket.nickname === undefined){
@@ -72,9 +78,13 @@ io.on("connection", function(socket){
         }
         
         t = getTimeStamp();
-        messages[msg] = t;
         
         io.emit("chat message", t, msg, socket.id, socket.color, socket.nickname);
+    });
+    
+    socket.on("addMessage", function(msg){
+        messages.push(msg);
+        console.log(messages);
     });
     
     socket.on("disconnect", function(){

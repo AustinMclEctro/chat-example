@@ -41,9 +41,11 @@
             var m = $("#m").val();
             
             // Check for /nick command
-            if(m.slice(0, 5).includes("/nick")){
-                var nickname = m.slice(6);
-                socket.emit("sendNickname", nickname);
+            if(m.slice(0, 10) === "/nickcolor"){
+                socket.emit("changeColor", m.slice(11));
+            }
+            else if(m.slice(0, 5) === "/nick"){
+                socket.emit("sendNickname", m.slice(6));
             }
             else{
                 var t = "";
@@ -72,6 +74,7 @@
             }
             
             $("#messages").append($(m));
+            socket.emit("addMessage", m);
             
             // Keep scroll at bottom
             document.getElementById("messagesDiv").scrollTop = document.getElementById("messagesDiv").scrollHeight;
@@ -91,13 +94,15 @@
         });
         
         socket.on("updateMessages", function(messages){
-            for(var i in messages){
-               $("#messages").append($("<li id='timestamp'>"+messages[i]+"<li>"+i+"</li></li>"));
-                document.getElementById("messagesDiv").scrollTop = document.getElementById("messagesDiv").scrollHeight;
-           }
+            
+            messages.forEach(function(m){
+                $("#messages").append(m);
+            });
+
+            document.getElementById("messagesDiv").scrollTop = document.getElementById("messagesDiv").scrollHeight;
         });
           
-        socket.on("connected", function(id, color){
+        socket.on("updateProps", function(id, color){
             userId = id;
             userColor = color;
         });
