@@ -54,13 +54,15 @@ form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 
     flex-basis: auto;
     flex-direction: column;
     overflow-y: hidden;
+    min-height: 70%;
+    min-width: ;
 }
 
 #messagesDiv{
     padding: 0.5em;
     overflow-x: auto;
     overflow-y: auto;
-    max-height: 95%;
+    max-height: 90%;
     position: absolute;
     bottom: 0;
     right: 0;

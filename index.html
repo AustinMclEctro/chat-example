@@ -33,7 +33,10 @@
     <script>
       $(function () {
         var socket = io();
-          
+          var userId = undefined;
+          var userColor = undefined;
+          var nick = undefined;
+        
         $("form").submit(function(){
             var m = $("#m").val();
             
@@ -44,19 +47,31 @@
             }
             else{
                 var t = "";
-                socket.emit("chat message", t, m);
+                socket.emit("chat message", t, m, userId, userColor, nick);
             }
             
             $("#m").val("");
             return false;
         });
           
-        socket.on("chat message", function(t, msg, id){
-            if(id === socket.id){
-                $("#messages").append($("<li id='timestamp'>"+t+"<li><b>"+msg+"</b></li></li>"));
-            } else{
-                $("#messages").append($("<li id='timestamp'>"+t+"<li>"+msg+"</li></li>"));
+        socket.on("chat message", function(t, msg, id, color, nick){
+            var m = "";
+            if(id === userId){  //bold the message
+                if(nick === null){
+                    m = "<li id='timestamp'>"+t+"<li><span style='color:"+color+";'>user "+id+"</span>: <strong>"+msg+"</strong></li></li>";
+                }
+                else{
+                    m = "<li id='timestamp'>"+t+"<li><span style='color:"+color+";'>"+nick+"</span>: <strong>"+msg+"</strong></li></li>";
+                }
             }
+            else if(nick === null){
+                    m = "<li id='timestamp'>"+t+"<li><span style='color:"+color+";'>user "+id+"</span>: "+msg+"</li></li>";
+            }
+            else{
+                m = "<li id='timestamp'>"+t+"<li><span style='color:"+color+";'>"+nick+"</span>: "+msg+"</li></li>";
+            }
+            
+            $("#messages").append($(m));
             
             // Keep scroll at bottom
             document.getElementById("messagesDiv").scrollTop = document.getElementById("messagesDiv").scrollHeight;
@@ -82,7 +97,12 @@
            }
         });
           
+        socket.on("connected", function(id, color){
+            userId = id;
+            userColor = color;
+        });
       });
+          
     </script>
   </body>
 </html>

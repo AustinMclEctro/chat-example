@@ -20,6 +20,12 @@ io.on("connection", function(socket){
     socket.emit("updateWelcome", "user "+socket.id); 
     socket.emit("updateMessages", messages);
     
+    var color = (Math.random()*0xFFFFFF << 0).toString(16);
+    color = "#"+color;
+    socket.color = color;
+    
+    socket.emit("connected", socket.id, color); 
+    
     if(!users.includes(socket.id)){
         users.push(socket.id);
         io.emit("refreshUsersList", users);
@@ -53,21 +59,22 @@ io.on("connection", function(socket){
         console.log(users);
     });
     
-    socket.on("chat message", function(t, msg){
+    socket.on("chat message", function(t, msg, id, color, nick){
         // maintain 200 max messages
         if(Object.keys(messages).length === 200){
             delete messages[0];
         }
-        
+        var m = "";
         if(socket.nickname === undefined){
-            msg = "user "+socket.id+": "+msg;
+            m = "user "+socket.id+": "+msg;
         } else{
-            msg = socket.nickname+": "+msg;
-        } 
+            m = socket.nickname+": "+msg;
+        }
+        
         t = getTimeStamp();
         messages[msg] = t;
         
-        io.emit("chat message", t, msg, socket.id);
+        io.emit("chat message", t, msg, socket.id, socket.color, socket.nickname);
     });
     
     socket.on("disconnect", function(){
