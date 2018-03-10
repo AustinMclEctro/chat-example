@@ -59,7 +59,7 @@ form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 
 #messagesDiv{
     padding: 0.5em;
     overflow-x: auto;
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: 95%;
     position: absolute;
     bottom: 0;
@@ -80,7 +80,7 @@ form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 
     padding: 1%;
     margin: 1%;
     overflow-x: auto;
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: 95%;
 }
 

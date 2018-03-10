@@ -57,7 +57,9 @@
             } else{
                 $("#messages").append($("<li id='timestamp'>"+t+"<li>"+msg+"</li></li>"));
             }
-            window.scrollTo(0, document.body.scrollHeight);
+            
+            // Keep scroll at bottom
+            document.getElementById("messagesDiv").scrollTop = document.getElementById("messagesDiv").scrollHeight;
         });
           
         socket.on("refreshUsersList", function(users){
@@ -69,13 +71,14 @@
         });
           
         socket.on("updateWelcome", function(name){
-           $("#Welcome").text("Welcome "+name);
+           $("#WelcomeHeading").text("Welcome "+name);
             return false;
         });
         
         socket.on("updateMessages", function(messages){
             for(var i in messages){
                $("#messages").append($("<li id='timestamp'>"+messages[i]+"<li>"+i+"</li></li>"));
+                document.getElementById("messagesDiv").scrollTop = document.getElementById("messagesDiv").scrollHeight;
            }
         });
           
